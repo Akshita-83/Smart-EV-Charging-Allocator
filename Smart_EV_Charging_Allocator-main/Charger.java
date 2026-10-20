@@ -1,117 +1,65 @@
-#include <stdio.h>
 
+public class Charger {
+    private int id;
+    private int power;
+    private boolean busy;
+    private Vehicle vehicle;
+    private int finishTime;
 
-/* ===================================================== */
-/* VEHICLE STRUCTURE                                     */
-/* ===================================================== */
+    public Charger(int id, int power) {
+        this.id = id;
+        this.power = power;
+        reset();
+    }
 
-struct Vehicle {
+    public void reset() {
+        busy = false;
+        vehicle = null;
+        finishTime = 0;
+    }
 
-    int id;
-    int arrivalTime;
-    int currentBattery;
-    int targetBattery;
-    int chargeDuration;
-    int emergency;
-    int startTime;
-    int waitTime;
+    public void assignVehicle(Vehicle v, int time) {
+        vehicle = v;
+        busy = true;
+        finishTime = time + v.getChargeDuration();
 
-};
+        System.out.printf(
+            "V%d starts charging on Charger %d at time %d%n",
+            v.getId(), id, time
+        );
+        System.out.println("Expected finish time: " + finishTime);
+    }
 
+    public void finishCharging() {
+        if (vehicle != null) {
+            System.out.printf(
+                "V%d finished charging on Charger %d%n",
+                vehicle.getId(), id
+            );
+        }
+        reset();
+    }
 
-/* ===================================================== */
-/* CHARGER STRUCTURE                                     */
-/* ===================================================== */
+    public int getId() {
+        return id;
+    }
 
-struct Charger {
+    public int getPower() {
+        return power;
+    }
 
-    int id;
-    int power;
-    int busy;
-    int vehicleId;
-    int finishTime;
+    public boolean isBusy() {
+        return busy;
+    }
 
-};
+    public int getFinishTime() {
+        return finishTime;
+    }
 
-
-/* ===================================================== */
-/* VEHICLE DATA                                          */
-/* ===================================================== */
-
-struct Vehicle vehicles[5] = {
-
-    /* ID  Arrival  Battery  Target  Duration  Emergency  Start  Wait */
-
-    {1,    0,       20,      80,     0,        0,         -1,    0},
-
-    {2,    0,       40,      80,     0,        0,         -1,    0},
-
-    {3,    1,       30,      80,     0,        0,         -1,    0},
-
-    {4,    2,       50,      80,     0,        1,         -1,    0},
-
-    {5,    2,       60,      80,     0,        0,         -1,    0}
-
-};
-
-
-/* ===================================================== */
-/* CHARGER DATA                                          */
-/* ===================================================== */
-
-struct Charger c1 = {
-
-    1,
-    50,
-    0,
-    0,
-    0
-
-};
-
-
-struct Charger c2 = {
-
-    2,
-    50,
-    0,
-    0,
-    0
-
-};
-
-
-/* ===================================================== */
-/* CALCULATE CHARGING DURATION                           */
-/* ===================================================== */
-
-int calculateChargeDuration(
-
-    int currentBattery,
-
-    int targetBattery,
-
-    int power
-
-) {
-
-    int batteryDifference;
-
-    int k;
-
-    int duration;
-
-
-    batteryDifference =
-        targetBattery - currentBattery;
-
-
-    k = 10;
-
-
-    duration =
-        (batteryDifference * k) / power;
-
-
-    return duration;
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+    public int getVehicleId() {
+    return vehicle == null ? 0 : vehicle.getId();
+}
 }

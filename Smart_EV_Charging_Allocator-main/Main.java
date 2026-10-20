@@ -6,7 +6,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         EVChargingSimulation simulation = new EVChargingSimulation();
 
-        int choice;
+        int choice=-1;
 
         do {
             System.out.println("\n================================");
